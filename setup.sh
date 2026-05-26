@@ -12,7 +12,7 @@ apt-get update -y
 apt-get install -y python3 python3-pip git
 
 # 2. 安裝 Python 依賴
-pip3 install fastapi uvicorn httpx --break-system-packages
+pip3 install fastapi uvicorn httpx --break-system-packages --ignore-installed typing-extensions
 
 # 3. 建立應用目錄
 mkdir -p /opt/databricks-playground

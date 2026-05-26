@@ -89,7 +89,7 @@
 
  <div class="space-y-1">
  <label class="block text-xs font-medium text-slate-500 dark:text-slate-400">API Base URL</label>
- <input id="base-url" type="text" value="https://7405604499366644.4.ai-gateway.azuredatabricks.net/mlflow/v1" class="w-full px-3 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+ <input id="base-url" type="text" value="https://adb-7405612280372506.6.azuredatabricks.net" class="w-full px-3 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
  </div>
 
  <!-- ✅ 使用同源相對路徑，無 CORS 問題 -->
@@ -321,7 +321,7 @@
  try {
  const config = JSON.parse(saved);
  document.getElementById('api-key').value = config.apiKey || '';
- document.getElementById('base-url').value = config.baseUrl || '';
+ document.getElementById('base-url').value = config.baseUrl || 'https://adb-7405612280372506.6.azuredatabricks.net';
  // ✅ 預設 proxyMode 為 custom（若沒有儲存過設定的話）
  document.getElementById('proxy-mode').value = config.proxyMode || 'custom';
  // ✅ 清除舊的 127.0.0.1，改用空值（代表同源相對路徑）
@@ -595,17 +595,16 @@
  const startTime = Date.now();
  let success = false, assistantResponse = '', lastError = null;
 
- // ✅ 同源模式：留空代理位址時用相對路徑，直接走當前 Server 的 proxy，無 CORS
+ // 同源模式：留空代理位址時用相對路徑，無 CORS
  let finalFetchUrl;
  if (proxyMode === 'custom') {
  if (customProxyUrl && customProxyUrl.trim() !== '') {
- const urlObj = new URL(`${baseUrl}/chat/completions`);
- finalFetchUrl = `${customProxyUrl.trim()}${urlObj.pathname}`;
+ finalFetchUrl = `${customProxyUrl.trim()}/serving-endpoints/${modelName}/invocations`;
  } else {
- finalFetchUrl = '/mlflow/v1/chat/completions';
+ finalFetchUrl = `/serving-endpoints/${modelName}/invocations`;
  }
  } else {
- finalFetchUrl = `${baseUrl}/chat/completions`;
+ finalFetchUrl = `${baseUrl}/serving-endpoints/${modelName}/invocations`;
  }
 
  try {

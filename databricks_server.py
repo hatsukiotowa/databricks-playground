@@ -17,8 +17,8 @@ from fastapi.responses import HTMLResponse
 from pathlib import Path
 import uvicorn
 
-DATABRICKS_BASE_URL = "https://7405604499366644.4.ai-gateway.azuredatabricks.net"
-HOST = "0.0.0.0"
+DATABRICKS_BASE_URL = "https://adb-7405612280372506.6.azuredatabricks.net"
+ HOST = "0.0.0.0"
 PORT = 8080
 
 app = FastAPI(title="Databricks Playground Server")
@@ -37,10 +37,10 @@ async def serve_playground():
     html_path = Path(__file__).parent / "databricks_playground.html"
     return HTMLResponse(content=html_path.read_text(encoding="utf-8"))
 
-# ── API 代理：轉發所有 /mlflow/* 請求到 Databricks ──────────────────────────
-@app.api_route("/mlflow/{path:path}", methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"])
-async def proxy_mlflow(path: str, request: Request):
-    target_url = f"{DATABRICKS_BASE_URL}/mlflow/{path}"
+# ── API 代理：轉發所有 /serving-endpoints/* 請求到 Databricks ─────────────
+@app.api_route("/serving-endpoints/{path:path}", methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"])
+async def proxy_serving_endpoints(path: str, request: Request):
+    target_url = f"{DATABRICKS_BASE_URL}/serving-endpoints/{path}"
     headers = {k: v for k, v in request.headers.items() if k.lower() != "host"}
     body = await request.body()
 

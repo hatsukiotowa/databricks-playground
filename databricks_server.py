@@ -18,7 +18,7 @@ from pathlib import Path
 import uvicorn
 
 DATABRICKS_BASE_URL = "https://adb-7405612280372506.6.azuredatabricks.net"
- HOST = "0.0.0.0"
+HOST = "0.0.0.0"
 PORT = 8080
 
 app = FastAPI(title="Databricks Playground Server")
